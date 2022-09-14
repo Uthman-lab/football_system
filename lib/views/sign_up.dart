@@ -44,13 +44,19 @@ class MyElevatedButton extends StatelessWidget {
 
 class MyTextField extends StatelessWidget {
   final username;
-  const MyTextField({Key? key, required this.username}) : super(key: key);
+  final keyboad;
+  final controller;
+  const MyTextField(
+      {Key? key, required this.username, this.controller, this.keyboad})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
         margin: EdgeInsets.all(10),
         child: TextField(
+          keyboardType: keyboad,
+          controller: controller,
           decoration: InputDecoration(
               border:
                   OutlineInputBorder(borderRadius: BorderRadius.circular(20)),

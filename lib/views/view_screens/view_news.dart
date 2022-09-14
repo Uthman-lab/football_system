@@ -2,6 +2,9 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:football_system/views/view_screens/new_details.dart';
+import 'package:provider/provider.dart';
+
+import '../../providers/news_provider.dart';
 
 class NewsHeadLines extends StatelessWidget {
   const NewsHeadLines({Key? key}) : super(key: key);
@@ -11,42 +14,26 @@ class NewsHeadLines extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("News HeadLines")),
       body: ListView(
-        children: newsHeadLines(30, context),
+        children: newsHeadLines(context),
       ),
     );
   }
 
-  Map getInfoAndColor() {
-    Random rand = Random();
+  List<Widget> newsHeadLines(context) {
+    var pros = Provider.of<NewsProvider>(context, listen: false).news;
+    List<Map> news = pros
+        .map((e) =>
+            {"info": e.body, "HeadLine": e.headline, "picture": e.Picture})
+        .toList();
 
-    List colors = [
-      Colors.red,
-      Colors.purple,
-      Colors.blueAccent,
-      Colors.greenAccent
-    ];
+    return List<Widget>.generate(news.length, (index) {
+      String subTitle = news[index]["info"];
+      Color color = news[index]["picture"];
 
-    List info = [
-      "ConG Into Existing Systems. Quick Account Setup. WebEST-based API",
-      " Reliable & Scalable. Global Reach and Delivery. Services: Simplified R",
-      "Business Profile Support.",
-      "-Based Interface. Easy To Implement. Simple & .",
-      "lobally. Access 1000+ Networks For Your SMS Campaigns. Easy Integration",
-    ];
-
-    return {
-      "color": colors[rand.nextInt(colors.length)],
-      "info": info[rand.nextInt(info.length)]
-    };
-  }
-
-  List<Widget> newsHeadLines(num, context) {
-    return List<Widget>.generate(num, (index) {
-      String subTitle = getInfoAndColor()["info"];
-      Color color = getInfoAndColor()["color"];
+      String headline = news[index]["HeadLine"];
       return GestureDetector(
           child: ListTile(
-              title: Text("HeadLine $index"),
+              title: Text(headline),
               subtitle: Text(subTitle),
               leading: CircleAvatar(
                 backgroundColor: color,
@@ -54,10 +41,7 @@ class NewsHeadLines extends StatelessWidget {
           onTap: () => Navigator.push(
                 context,
                 MaterialPageRoute(
-                    builder: (_) => NewsDetails(
-                        headLine: "headLine $index",
-                        subhead: subTitle,
-                        color: color)),
+                    builder: (_) => NewsDetails(news: pros[index])),
               ));
     });
   }

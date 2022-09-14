@@ -1,6 +1,8 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:football_system/providers/finance_provider.dart';
+import 'package:provider/provider.dart';
 
 class VeiwFinance extends StatelessWidget {
   const VeiwFinance({Key? key}) : super(key: key);
@@ -10,28 +12,32 @@ class VeiwFinance extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(title: Text("Financial records")),
       body: ListView(
-        children: financialInfo(100),
+        children: financialInfo(context),
       ),
     );
   }
 
-  List<Widget> financialInfo(num) {
-    List incomes = [30000000, 2300000, 23422342, 23421341, 134134, 543453554];
-    List expenditures = [23242341, 13413, 32341243, 1343211, 13413411];
-    return List<Widget>.generate(num, (index) {
-      Map data = {
-        "year": " 20${index < 10 ? "0$index" : index} ",
-        "income": incomes[Random().nextInt(incomes.length)],
-        "expenditure": expenditures[Random().nextInt(expenditures.length)]
-      };
+  List<Widget> financialInfo(context) {
+    var pro = Provider.of<FinanceProvider>(context).finances;
+    List<Map> finances = pro
+        .map((e) => {
+              "year": e.year,
+              "income": e.income,
+              "expenditure": e.expenditure,
+              "profit": e.calculateProfit()
+            })
+        .toList();
 
-      int proLoss = data["income"] - data["expenditure"];
+    return List<Widget>.generate(finances.length, (index) {
+      Map data = finances[index];
+      print(data);
       return Card(
         child: ListTile(
           title: Text("Income: \$${data["income"]} "),
           leading: Text("year: ${data["year"]}"),
           subtitle: Text("Expenditure: \$${data['expenditure']}"),
-          trailing: Text("${proLoss > 0 ? "profit" : "loss"}: \$$proLoss"),
+          trailing: Text(
+              "${data["profit"] > 0 ? "profit" : "loss"}: \$${data["profit"]}"),
         ),
       );
     });

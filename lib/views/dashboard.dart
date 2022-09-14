@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:football_system/views/view_screens/view_finance.dart';
 
 import 'package:football_system/views/view_screens/view_news.dart';
+import 'package:football_system/views/view_screens/view_team_details.dart';
 
 import 'add_screens/add_coach.dart';
 import 'add_screens/add_directors.dart';
@@ -28,7 +29,7 @@ class MyDashboard extends StatelessWidget {
 
   List<Widget> gridItems(context) {
     List genre = [
-      {"title": "View Team", "screen": MyDashboard()},
+      {"title": "View Team", "screen": ViewTeam()},
       {"title": "View News", "screen": NewsHeadLines()},
       {"title": "View Finance", "screen": VeiwFinance()},
       {"title": "Add Player", "screen": AddPlayer()},
