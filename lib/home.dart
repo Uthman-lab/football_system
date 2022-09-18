@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:football_system/providers/authentication.dart';
 import 'package:football_system/providers/coach_provider.dart';
 import 'package:football_system/providers/director_provider.dart';
 import 'package:football_system/providers/finance_provider.dart';
@@ -16,7 +17,9 @@ List<ChangeNotifierProvider> providers(context) => <ChangeNotifierProvider>[
           create: (context) => CoachProvider()),
       ChangeNotifierProvider<NewsProvider>(create: (context) => NewsProvider()),
       ChangeNotifierProvider<FinanceProvider>(
-          create: (context) => FinanceProvider())
+          create: (context) => FinanceProvider()),
+      ChangeNotifierProvider<Authentication>(
+          create: (context) => Authentication())
     ];
 
 class MyApp extends StatelessWidget {

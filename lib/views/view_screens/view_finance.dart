@@ -9,35 +9,42 @@ class VeiwFinance extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var pro = Provider.of<FinanceProvider>(context).getFinance();
     return Scaffold(
       appBar: AppBar(title: Text("Financial records")),
-      body: ListView(
-        children: financialInfo(context),
-      ),
+      body: StreamBuilder(
+          stream: pro,
+          builder: (context, AsyncSnapshot snapshot) {
+            if (snapshot.hasError) return Center();
+            if (snapshot.hasData) {
+              List<Map> data = snapshot.requireData;
+              print(data);
+              return ListView(
+                children: financialInfo(data, context),
+              );
+            }
+
+            return Center(
+              child: CircularProgressIndicator(),
+            );
+          }),
     );
   }
 
-  List<Widget> financialInfo(context) {
-    var pro = Provider.of<FinanceProvider>(context).finances;
-    List<Map> finances = pro
-        .map((e) => {
-              "year": e.year,
-              "income": e.income,
-              "expenditure": e.expenditure,
-              "profit": e.calculateProfit()
-            })
-        .toList();
-
+  List<Widget> financialInfo(List<Map> finances, context) {
     return List<Widget>.generate(finances.length, (index) {
       Map data = finances[index];
-      print(data);
+      // int profit = 3;
+      // data["income"] - data["expenditure"];
+
       return Card(
         child: ListTile(
-          title: Text("Income: \$${data["income"]} "),
-          leading: Text("year: ${data["year"]}"),
+          title: Text("Income: ${data["income"]} "),
+          leading: Text("year: "),
+
+          ///${data["year"]}"),
           subtitle: Text("Expenditure: \$${data['expenditure']}"),
-          trailing: Text(
-              "${data["profit"] > 0 ? "profit" : "loss"}: \$${data["profit"]}"),
+          //  trailing: Text("${profit > 0 ? "profit" : "loss"}: \$$profit"),
         ),
       );
     });

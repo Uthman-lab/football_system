@@ -27,12 +27,13 @@ class AddDirector extends StatelessWidget {
             ),
             MyElevatedButton(
               label: "Add Director",
-              onpress: () {
-                var pro = Provider.of<DirectorsProvider>(context, listen: false)
-                    .directors;
+              onpress: () async {
+                var pro =
+                    Provider.of<DirectorsProvider>(context, listen: false);
                 Director director =
                     Director(name: dName.text, position: dPosition.text);
-                pro.add(director);
+                pro.directors.add(director);
+                pro.addDirector(director, context);
                 print(pro);
               },
             )

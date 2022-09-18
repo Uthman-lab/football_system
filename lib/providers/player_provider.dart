@@ -1,39 +1,54 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import 'news_provider.dart';
 
 class PlayerProvider extends ChangeNotifier {
   List<Player> players = [];
-  late String _name;
-  late int _age;
-  late String _nation;
-  late String _position;
-  late String _contract;
+  final String _playerCollection = "players";
+  final String _name = "name";
+  final String _age = "age";
+  final String _nation = "nation";
+  final String _position = "position";
+  final String _contract = "contract";
 
-  set name(String newName) {
-    _name = newName;
+  final String _team = "team";
+  void addPlayer(Player player, context) async {
+    try {
+      await FirebaseFirestore.instance
+          .collection(_team)
+          .doc("9S9NAs66XMopQRpYvNtr")
+          .collection(_playerCollection)
+          .add({
+        _name: player.name,
+        _position: player.position,
+        _age: player.age,
+        _nation: player.nation,
+        _contract: player.contract
+      });
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text("success, waw")));
+    } catch (e) {
+      ScaffoldMessenger.of(context)
+          .showSnackBar(SnackBar(content: Text(e.toString())));
+    }
   }
 
-  set age(int newAge) {
-    _age = newAge;
+  Stream<List<Map>> getPlayers() async* {
+    try {
+      Stream<List<Map>> method = FirebaseFirestore.instance
+          .collection(_team)
+          .doc("9S9NAs66XMopQRpYvNtr")
+          .collection(_playerCollection)
+          .snapshots()
+          .map((event) => event.docs.map((e) => e.data()).toList());
+      yield* method;
+    } catch (e) {
+      print(e);
+    }
   }
-
-  set position(String newPos) {
-    _position = newPos;
-  }
-
-  set nation(String newNation) {
-    _nation = newNation;
-  }
-
-  set contract(String newContract) {
-    _contract = newContract;
-  }
-
-  String get name => _name;
-  String get position => _position;
-  int get age => _age;
-  String get nation => _nation;
-  String get contract => _contract;
 }
 
 class Player {

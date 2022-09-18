@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "1095930551962",
+    "project_id": "football-system-623cb",
+    "storage_bucket": "football-system-623cb.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1095930551962:android:e32bbbf0d7100906540923",
+        "android_client_info": {
+          "package_name": "com.example.football_system"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1095930551962-vdlae878uval9m87qr39p623bcfp62ji.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDbM5CQruh87c2dmUG7BW-z3WP9hNGsjJQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1095930551962-vdlae878uval9m87qr39p623bcfp62ji.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

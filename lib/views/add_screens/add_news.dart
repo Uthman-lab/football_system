@@ -34,7 +34,7 @@ class AddNews extends StatelessWidget {
               label: "Add Player",
               onpress: () {
                 var pros =
-                    Provider.of<NewsProvider>(context, listen: false).news;
+                    Provider.of<NewsProvider>(context, listen: false); //.news;
                 List colors = [
                   Colors.red,
                   Colors.purple,
@@ -45,7 +45,7 @@ class AddNews extends StatelessWidget {
                     headline: headline.text,
                     body: body.text,
                     Picture: colors[Random().nextInt(colors.length)]);
-                pros.add(news);
+                pros.addNews(news, context);
                 print(news);
               },
             )

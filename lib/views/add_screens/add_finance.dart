@@ -36,13 +36,12 @@ class UpdateFinance extends StatelessWidget {
             MyElevatedButton(
               label: "Update Income",
               onpress: () {
-                var pro = Provider.of<FinanceProvider>(context, listen: false)
-                    .finances;
+                var pro = Provider.of<FinanceProvider>(context, listen: false);
                 var finance = Finance(
                     year: fYear.text,
                     expenditure: int.parse(fExpenditure.text),
                     income: int.parse(fIncome.text));
-                pro.add(finance);
+                pro.addFinance(finance, context);
                 print(pro);
               },
             )

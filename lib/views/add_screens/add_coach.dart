@@ -31,6 +31,10 @@ class AddCoach extends StatelessWidget {
               controller: cNation,
             ),
             MyTextField(
+              username: "Position",
+              controller: cPostion,
+            ),
+            MyTextField(
               username: "Contract",
               controller: cContract,
             ),
@@ -41,15 +45,15 @@ class AddCoach extends StatelessWidget {
             MyElevatedButton(
               label: "Add Coach",
               onpress: () {
-                var pro =
-                    Provider.of<CoachProvider>(context, listen: false).coaches;
+                var pro = Provider.of<CoachProvider>(context,
+                    listen: false); //.coaches;
                 Coach coach = Coach(
                     name: cName.text,
                     age: int.parse(cAge.text),
                     nation: cNation.text,
                     position: cPostion.text,
                     contract: cContract.text);
-                pro.add(coach);
+                pro.addCoach(coach, context);
               },
             )
           ],

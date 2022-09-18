@@ -43,15 +43,16 @@ class AddPlayer extends StatelessWidget {
             ),
             MyElevatedButton(
               label: "Add Player",
-              onpress: () {
-                var pro =
-                    Provider.of<PlayerProvider>(context, listen: false).players;
-                pro.add(Player(
+              onpress: () async {
+                var pro = Provider.of<PlayerProvider>(context,
+                    listen: false); //.players;
+                Player player = Player(
                     name: pName.text,
                     age: int.parse(pAge.text),
                     nation: pNation.text,
                     position: pPostion.text,
-                    contract: pContract.text));
+                    contract: pContract.text);
+                pro.addPlayer(player, context);
               },
             )
           ],

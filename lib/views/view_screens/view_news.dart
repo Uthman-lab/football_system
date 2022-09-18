@@ -11,38 +11,44 @@ class NewsHeadLines extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var pro = Provider.of<NewsProvider>(context);
     return Scaffold(
       appBar: AppBar(title: Text("News HeadLines")),
-      body: ListView(
-        children: newsHeadLines(context),
-      ),
+      body: StreamBuilder(
+          stream: pro.getNews(),
+          builder: (context, AsyncSnapshot<List<Map>> snapshot) {
+            if (snapshot.hasError) {
+              return Text("error, loading database...");
+            }
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return CircularProgressIndicator();
+            }
+            if (!snapshot.hasData) return Text("no news yet");
+            List<Map> req = snapshot.requireData;
+            return ListView.builder(
+                itemCount: req.length,
+                itemBuilder: (context, index) {
+                  String headline = req[index]["data"]["body"];
+                  String body = req[index]["data"]["body"];
+                  String newsId = req[index]["id"];
+
+                  return GestureDetector(
+                      child: ListTile(
+                        title: Text(headline),
+                        subtitle: Text(
+                            " ${body.length > 20 ? "${body.substring(0, 20)}..." : body}"),
+                      ),
+                      onTap: () => Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => NewsDetails(
+                                news: News(headline: headline, body: body),
+                                newsId: newsId,
+                              ),
+                            ),
+                          ));
+                });
+          }),
     );
-  }
-
-  List<Widget> newsHeadLines(context) {
-    var pros = Provider.of<NewsProvider>(context, listen: false).news;
-    List<Map> news = pros
-        .map((e) =>
-            {"info": e.body, "HeadLine": e.headline, "picture": e.Picture})
-        .toList();
-
-    return List<Widget>.generate(news.length, (index) {
-      String subTitle = news[index]["info"];
-      Color color = news[index]["picture"];
-
-      String headline = news[index]["HeadLine"];
-      return GestureDetector(
-          child: ListTile(
-              title: Text(headline),
-              subtitle: Text(subTitle),
-              leading: CircleAvatar(
-                backgroundColor: color,
-              )),
-          onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (_) => NewsDetails(news: pros[index])),
-              ));
-    });
   }
 }
